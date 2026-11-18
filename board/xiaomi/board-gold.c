@@ -4,6 +4,9 @@
 //
 
 #include <board_ops.h>
+#ifdef CONFIG_DUALBOOT_SUPPORT
+#include <lib/dualboot.h>
+#endif
 
 // Under stage1 the payload runs from malloc'd heap, far outside the ~±4MB that
 // PATCH_CALL/PATCH_BRANCH can encode. So every LK -> payload redirect hops
@@ -33,6 +36,10 @@ static void install_veneer(uint32_t slot, void* target) {
 // and hops through a veneer parked in the now-dead getter body.
 static void recovery_cmdline_hook(uint32_t fdt) {
     handle_recovery_boot();
+#ifdef CONFIG_DUALBOOT_SUPPORT
+    dualboot_apply_cmdline((char*)CONFIG_RECOVERY_CMDLINE1_ADDRESS);
+    dualboot_apply_cmdline((char*)CONFIG_RECOVERY_CMDLINE2_ADDRESS);
+#endif
     ((void (*)(uint32_t))(FDT_BOOTARGS_SETTER_ADDRESS | 1))(fdt);
 }
 
@@ -101,6 +108,9 @@ static void spoof_lock_state(void) {
 
     // Expose the current spoofing state so it can be queried over fastboot.
     fastboot_publish("kaeru-bldr-spoofing", is_spoofing_enabled() ? "1" : "0");
+#ifdef CONFIG_DUALBOOT_SUPPORT
+    dualboot_init();
+#endif
 }
 
 // Register kaeru bootloader lock-state spoofing control command.

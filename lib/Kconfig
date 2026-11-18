@@ -313,7 +313,7 @@ menu "Storage Support"
 
     config MT_PART_GET_DEVICE_ADDRESS
         hex "mt_part_get_device() address"
-        depends on USE_MT_PART_API || USE_LEGACY_PARTITION_API || STORAGE_SUPPORT
+        depends on USE_MT_PART_API || USE_LEGACY_PARTITION_API || STORAGE_SUPPORT || DUALBOOT_SUPPORT
 
     config MT_PART_GET_PARTITION_ADDRESS
         hex "mt_part_get_partition() address"
@@ -466,4 +466,25 @@ menu "Image Patching"
         help
           If set, name of LK in the image header will be changed to the
           specified value.
+
+    config DUALBOOT_SUPPORT
+        bool "Dual boot support"
+        default n
+        help
+          Enable dual boot support between stock and custom Android ROMs.
+
+    config FASTBOOT_DUALBOOT_COMMAND
+        bool "Fastboot dual boot commands"
+        depends on DUALBOOT_SUPPORT
+        default y
+        help
+          Enable fastboot oem set-boot, show-active, check-size, and resize commands.
+
+    config GPT_UPDATE_ADDRESS
+        hex "gpt_partition_table_update address"
+        depends on DUALBOOT_SUPPORT
+
+    config READ_BLOCK_ADDRESS
+        hex "read_block address"
+        depends on DUALBOOT_SUPPORT
 endmenu

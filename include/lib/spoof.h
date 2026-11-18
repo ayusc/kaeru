@@ -11,6 +11,7 @@
 #include <lib/fastboot.h>
 
 int is_spoofing_enabled(void);
+int is_spoofing_enabled_slot(int slot);
 int get_lock_state(uint32_t *lock_state);
 int sec_usbdl_enabled(void);
 unsigned int seclib_sec_boot_enabled(unsigned int);

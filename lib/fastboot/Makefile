@@ -7,3 +7,4 @@ obj-$(CONFIG_ENVIRONMENT_SUPPORT) += cmd_env.o
 obj-$(CONFIG_FASTBOOT_OEM_TABLE) += oem_table.o
 obj-$(CONFIG_IDMELIB_SUPPORT) += cmd_idme.o
 obj-$(CONFIG_STORAGE_SUPPORT) += cmd_partitions.o
+obj-$(CONFIG_FASTBOOT_DUALBOOT_COMMAND) += cmd_dualboot.o
